@@ -1,6 +1,7 @@
 import type { Site } from './types';
 
-export const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+// trailing slashes are removed so "https://x.vercel.app/" and "https://x.vercel.app" both work
+export const API = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000').replace(/\/+$/, '');
 
 export async function getSite(): Promise<Site> {
   const r = await fetch(`${API}/api/site`, { cache: 'no-store' });
