@@ -180,3 +180,7 @@ html[data-theme=light] .cg .lv3{fill:#30a14e}html[data-theme=light] .cg .lv4{fil
 .cgf{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;margin-top:.8rem;font-size:.85rem;color:var(--mu)}
 .cgf a:hover{color:var(--tx)}
 .cgl{display:flex;align-items:center;gap:.3rem}
+
+/* project card buttons */
+.plinks{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem}
+.btn.sm{padding:.5rem 1.1rem;font-size:.9rem}

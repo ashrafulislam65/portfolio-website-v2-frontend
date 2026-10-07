@@ -7,6 +7,19 @@ function Img({ p }: { p: Project }) {
   return <div className="pimg">{safe(p.image) ? <img loading="lazy" src={safe(p.image)} alt={p.title} /> : (p.title[0] || '?')}</div>;
 }
 
+// Live / Source / Details buttons shown on every card (a button only appears if its link is filled in the admin)
+function Links({ p, onDetails }: { p: Project; onDetails: () => void }) {
+  const live = safe(p.live);
+  const repo = safe(p.repo);
+  return (
+    <div className="plinks" onClick={(e) => e.stopPropagation()}>
+      {live && <a className="btn p sm" href={live} target="_blank" rel="noopener noreferrer">Live site ↗</a>}
+      {repo && <a className="btn sm" href={repo} target="_blank" rel="noopener noreferrer">Source code</a>}
+      <button className="btn sm" onClick={onDetails}>Details</button>
+    </div>
+  );
+}
+
 export default function Projects({ items }: { items: Project[] }) {
   const cats = ['All', ...Array.from(new Set(items.map((i) => i.category).filter(Boolean)))];
   const [cat, setCat] = useState('All');
@@ -39,6 +52,7 @@ export default function Projects({ items }: { items: Project[] }) {
             <h3>{p.title}</h3>
             <p>{p.description}</p>
             <div className="tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
+            <Links p={p} onDetails={() => setOpen(p)} />
           </div>
         </article>
       ))}
@@ -54,8 +68,8 @@ export default function Projects({ items }: { items: Project[] }) {
               <p style={{ color: 'var(--mu)' }}>{open.description}</p>
               <div className="tags">{open.tags.map((t) => <span key={t}>{t}</span>)}</div>
               <div className="cta">
-                {safe(open.live) && <a className="btn p" href={safe(open.live)} target="_blank" rel="noopener noreferrer">Live site</a>}
-                {safe(open.repo) && <a className="btn" href={safe(open.repo)} target="_blank" rel="noopener noreferrer">Source</a>}
+                {safe(open.live) && <a className="btn p" href={safe(open.live)} target="_blank" rel="noopener noreferrer">Live site ↗</a>}
+                {safe(open.repo) && <a className="btn" href={safe(open.repo)} target="_blank" rel="noopener noreferrer">Source code</a>}
                 <button className="btn" onClick={() => setOpen(null)}>Close</button>
               </div>
             </div>
