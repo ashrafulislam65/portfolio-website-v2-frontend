@@ -4,11 +4,16 @@ export const token = () => (typeof window === 'undefined' ? null : localStorage.
 
 export async function call<T = any>(path: string, method = 'GET', body?: unknown): Promise<T> {
   const t = token();
-  const r = await fetch(`${API}${path}`, {
-    method,
-    headers: { 'Content-Type': 'application/json', ...(t ? { Authorization: `Bearer ${t}` } : {}) },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
+  let r: Response;
+  try {
+    r = await fetch(`${API}${path}`, {
+      method,
+      headers: { 'Content-Type': 'application/json', ...(t ? { Authorization: `Bearer ${t}` } : {}) },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch {
+    throw new Error(`Cannot reach the API (${API}). Check that the backend is running and CORS_ORIGIN matches this site's URL.`);
+  }
   if (r.status === 401 && path !== '/api/auth/login') {
     localStorage.removeItem('admin_token');
     location.href = '/admin/login';
